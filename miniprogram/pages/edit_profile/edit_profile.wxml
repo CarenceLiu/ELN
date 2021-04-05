@@ -1,0 +1,18 @@
+<view class = "container">
+  <view class="realName">
+    <text>姓名</text>
+    <view class="real">{{realName}}</view>
+  </view>
+  <view class="student_id">
+    <text>学号</text>
+    <view class="real">{{student_id}}</view>
+  </view>
+  <view class="school">
+    <text>学校</text>
+    <view class="real">{{school}}</view>
+  </view>
+  <view class="college">
+    <text>学院</text>
+    <view class="real">{{college}}</view>
+  </view>
+</view>

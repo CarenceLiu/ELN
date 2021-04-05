@@ -1,0 +1,8 @@
+<view class="container">
+  <button bindtap="showFile" class="button_1">查看pdf文件 </button>
+  <view class="list">
+    <block wx:for="{{filenames}}" wx:key="index">
+      <view class="text-content" bindtap="download" data-text="{{item}}">{{item}}</view>
+    </block>
+  </view>
+</view>

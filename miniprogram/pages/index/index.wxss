@@ -1,0 +1,8 @@
+button{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 10rpx;
+  height: 150rpx;
+}

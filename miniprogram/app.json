@@ -1,0 +1,28 @@
+{
+  "entryPagePath": "pages/login/login",
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/upload/upload",
+    "pages/history/history",
+    "pages/user_info/user_info",
+    "pages/edit_profile/edit_profile"
+  ],
+  "tabBar": {
+    "list": [
+      {
+        "text": "主页",
+        "pagePath": "pages/index/index",
+        "iconPath": "image/white_house.png",
+        "selectedIconPath": "image/gray_house.png"
+      },
+      {
+        "text": "用户",
+        "pagePath": "pages/user_info/user_info",
+        "iconPath": "image/white_person.png",
+        "selectedIconPath": "image/gray_person.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap13.json"
+}

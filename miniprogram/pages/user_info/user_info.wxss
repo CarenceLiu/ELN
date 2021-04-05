@@ -1,0 +1,20 @@
+.info-box{
+  width: 80%;
+}
+.avatar-img {
+  display: flex;
+  width: 200rpx;
+  height: 200rpx;
+  margin-left: 275rpx;
+  margin-right: 275rpx;
+  margin-bottom: 100rpx;
+  margin-top: 100rpx;
+  justify-content: center;
+  border: 1rpx solid gray;
+  border-radius: 200rpx;
+}
+.info-box>text{
+  display: block;
+  margin-left: 20%;
+  margin-top: 4%;
+}

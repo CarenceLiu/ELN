@@ -1,0 +1,19 @@
+<!--初始登录界面-->
+<view class="container">
+  <view class="cell_1">
+    <image class="name_image" src="../../image/loin_name.png"></image>
+    <label class="log_lab">姓名：</label>
+    <input class="log_input" placeholder="请输入真实姓名" bindinput="nameInput" value="{{realName}}"/>
+  </view>
+  <view class="cell_2">
+    <image class="key_image" src="../../image/login_key.png"></image>
+    <label class="log_lab">学号：</label>
+    <input class="log_input" placeholder="请输入学号" type="number" maxlength="10" bindinput="idInput" value="{{student_id}}"/>
+  </view>
+  <view class="button_signin">
+    <button open-type="getUserInfo" bindtap="signIn">登录</button>
+  </view>
+  <view class="button_signup">
+    <button bindtap="signUp">注册</button>
+  </view>
+</view>

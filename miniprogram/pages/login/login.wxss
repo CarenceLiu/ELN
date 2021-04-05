@@ -1,0 +1,47 @@
+.container{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding : 0;
+  box-sizing: border-box;
+}
+
+button{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 5%;
+  height: 100rpx;
+  width: 95%;
+  border-radius: 25rpx;
+}
+
+.cell_1,.cell_2{
+  margin-top: 5%;
+  line-height: 100rpx;
+  border-radius: 30rpx;
+  border:3rpx solid #999999;
+}
+
+.name_image,.key_image{
+  margin-left: 22rpx;
+  width: 35rpx;
+  height: 35rpx;
+}
+
+.log_input{
+  flex: block;
+  float: right;
+  width: 530rpx;
+  text-align: right;
+  margin-right: 22rpx;
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+  font-size: 35rpx;
+}
+
+.log_lab{
+  font-size: 35rpx;
+  margin-left: 10rpx;
+}

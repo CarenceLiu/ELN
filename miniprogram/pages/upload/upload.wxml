@@ -1,0 +1,6 @@
+
+<button bindtap="chooseFile" class="button_1">选择pdf文件 </button>
+<view class="text-content">
+  <text>{{sourceName}}</text>
+</view>
+<button bindtap="uploadFile" class="button_2">上传文件</button>

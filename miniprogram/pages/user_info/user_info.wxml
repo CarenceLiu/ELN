@@ -1,0 +1,20 @@
+<!--pages/user_info/user_info.wxml-->
+<view class="container">
+ 
+ <view class="info-box">
+   <view style="text-align: center;margin-bottom:10%;">
+     <image class="avatar-img" src="{{avatarUrl}}" />
+   </view>
+
+   <text>昵称： {{nickName}}</text>
+   <text>姓名： {{realName}}</text>
+   <text>学号： {{student_id}}</text>
+   <text>学校： {{school}}</text>
+   <text>学院： {{college}}</text>
+ </view>
+
+ <view style="margin-top:3%"> 
+   <navigator url="../edit_profile/edit_profile"><button>编辑个人资料</button></navigator>
+ </view>
+</view>
+

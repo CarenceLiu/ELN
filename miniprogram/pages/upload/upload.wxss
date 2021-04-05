@@ -1,0 +1,30 @@
+.button_1{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 200rpx;
+}
+
+.button_2{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 200rpx;
+  width: 750rpx;
+  bottom: 0ex;
+  position: fixed;
+}
+
+.text-content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1rpx solid #ffffff;
+  background-color: #F5F5F5;
+  margin: 2%;
+  height: 80rpx;
+  width: 95%;
+  font-size: 35rpx;
+}

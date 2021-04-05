@@ -1,0 +1,2 @@
+<navigator url="../upload/upload"><button>上传文件</button></navigator>
+<navigator url="../history/history"><button>查看历史上传文件</button></navigator>

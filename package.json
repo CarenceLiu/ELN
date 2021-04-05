@@ -1,0 +1,13 @@
+{
+  "name": "jationhuang's minicode for packnpm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "is-array": "^1.0.1"
+  }
+}
