@@ -1,3 +1,4 @@
+var app = getApp()
 async function timeout(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
@@ -47,8 +48,6 @@ Page({
     })
   },
 
-  
-
   async uploadFile() {
     this.readFileChosen()
     await timeout(500)
@@ -56,34 +55,42 @@ Page({
     var operation = "insertDoc"
     const sm2 = require('miniprogram-sm-crypto').sm2
     var urlPre = "https://023.node.internetapi.cn:21030"
-    console.log(this.data.sourceName)
-    console.log(this.data.content)
-    var user_id = "123456"
+    var userID = app.globalData.student_id
     var arg = {
-      user_id: user_id,
-      user_name: "zxt",
-      doc_id: user_id + ' ' + this.data.sourceName,
-      content: this.data.content ,
+      user_id: userID,
+      user_name: app.globalData.realName,
+      doc_id: userID + " " + this.data.sourceName,
+      content: this.data.content,
     }
     const key = sm2.generateKeyPairHex()
     var publicKey = key.publicKey
     var privateKey = key.privateKey
-    const iHtml = "/SCIDE/SCManager?action=executeContract&contractID=" + contractID +
-      "&operation=" + operation +
-      "&arg=" + JSON.stringify(arg) +
-      "&pubkey=" + publicKey + "&signature=";
-    const toSign = contractID + "|" + operation + "|" + arg + "|" + publicKey;
+    // const iHtml = "/SCIDE/SCManager?action=executeContract&contractID=" + contractID +
+    //   "&operation=" + operation +
+    //   "&arg=" + JSON.stringify(arg) +
+    //   "&pubkey=" + publicKey + "&signature=";
+    const iHtml = "/SCIDE/SCManager"
+    const toSign = contractID + "|" + operation + "|" + JSON.stringify(arg) + "|" + publicKey;
     const signature = sm2.doSignature(toSign, privateKey, {
       hash: true,
       der: true
     });
 
-    var url = urlPre + iHtml + signature;
+    var url = urlPre + iHtml + "?pubKey=abc&sign=def"
     console.log(url)
     console.log(JSON.stringify(arg))
     wx.request({
       url: url,
-      method: 'GET',
+      data: {
+        action: "executeContract",
+        contractID: contractID,
+        operation: operation,
+        arg: JSON.stringify(arg),
+        pubkey: publicKey,
+        signature: signature,
+      },
+      dataType: "json",
+      method: "POST",
       success: function (res) {
         console.log(res)
         console.log('success')
