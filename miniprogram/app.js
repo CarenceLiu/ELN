@@ -1,4 +1,5 @@
 App({
+  //全局变量，用户信息
   globalData:{
     nickName : "",
     avatarUrl : "",

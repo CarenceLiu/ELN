@@ -1,16 +1,18 @@
-async function timeout(ms) {
+//初始登录注册界面
+async function timeout(ms) {    //sleep函数
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
   });
 }
 
 Page({
-  data:{
+  data:{    //用户信息
     realName:"",
     student_id:"",
     result:""
   },
 
+  //从后端获取用户信息
   request_for_user(op) {
     var self = this
     var contractID = "logbook"
@@ -19,11 +21,11 @@ Page({
     var urlPre = "https://023.node.internetapi.cn:21030"
     var id = this.data.student_id
     var arg = undefined
-    if(op == "insertUser"){
+    if(op == "insertUser"){   //注册用户
       arg = {user_id: id, user_name: this.data.realName}
       arg = JSON.stringify(arg)
     }
-    else {
+    else {      //用户登录
       arg = id
     }
     const key = sm2.generateKeyPairHex()
@@ -54,19 +56,21 @@ Page({
     })
   },
   
-
+  //输入框事件函数
   nameInput: function(e){
     this.setData({
       realName: e.detail.value
     })
   },
 
+  //输入框事件函数
   idInput: function(e){
     this.setData({
       student_id: e.detail.value
     })
   },
 
+  //登录按钮
    async signIn(){
     var that = this;
     if(this.data.realName.length == 0||this.data.student_id.length == 0){
@@ -80,14 +84,14 @@ Page({
       await timeout(300)
       var ans =  JSON.parse(that.data.result)
       ans = ans.query_result
-      if(ans){
+      if(ans){    //响应为数据库中有该用户信息
         wx.showToast({
           title: '登录成功',
           icon:"none",
           duration:1000,
           success:function(){
             setTimeout(function(){
-              wx.getUserInfo({
+              wx.getUserInfo({    //修改全局变量
                 success: function(res) {
                   var app = getApp();
                   var userInfo = res.userInfo
@@ -100,13 +104,13 @@ Page({
                 }
               })
               wx.switchTab({
-                url: '../index/index',
+                url: '../index/index',    //跳转页面
               })
             },1000);
           }
         })
       }
-      else{
+      else{   //没有该用户信息
         that.setData({
           student_id:"",
           realName:""
@@ -120,6 +124,7 @@ Page({
     }
   },
 
+  //注册按钮
   async signUp(){
     var that = this;
     if(this.data.realName.length == 0||this.data.student_id.length == 0){
@@ -141,13 +146,13 @@ Page({
       await timeout(300)
       var ans =  JSON.parse(that.data.result)
       ans = ans.query_result
-      if(ans){
+      if(ans){    //用户在数据库中已存在
         wx.showToast({
           title: '用户已存在',
           icon:"none",
           duration:2000
         })
-      } else {
+      } else {    //用户不存在，注册成功
         that.request_for_user("insertUser")
         wx.showToast({
           title: '注册成功',

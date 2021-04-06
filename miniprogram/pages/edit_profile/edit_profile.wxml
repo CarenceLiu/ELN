@@ -1,3 +1,5 @@
+<!--pages/edit_profile/edit_profile.wxml-->
+<!--个人信息修改界面（未完成）-->
 <view class = "container">
   <view class="realName">
     <text>姓名</text>

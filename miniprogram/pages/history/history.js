@@ -1,3 +1,5 @@
+//历史文件界面
+//sleep函数，用于等待
 async function timeout(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
@@ -13,7 +15,7 @@ Page({
   get_user_id() {
     return getApp().globalData.student_id
   },
-
+  //获取上传文件列表
   request_for_doc() {
     var self = this
     var user_id = this.get_user_id()
@@ -57,6 +59,7 @@ Page({
       }
     })
   },
+  //下载文件
   download(e) {
     console.log(e)
     var doc_id = e.currentTarget.dataset.text

@@ -1,4 +1,5 @@
 <!--pages/user_info/user_info.wxml-->
+<!--用户信息页面-->
 <view class="container">
  
  <view class="info-box">
