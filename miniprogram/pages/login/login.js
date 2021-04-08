@@ -1,4 +1,4 @@
-// The initial user page
+// The initial user log-in page
 async function timeout(ms) {    // the "sleep" function
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
