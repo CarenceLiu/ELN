@@ -1,4 +1,4 @@
-var app = getApp()
+var app = getApp()  // Get global information
 async function timeout(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
@@ -8,12 +8,14 @@ async function timeout(ms) {
 Page({
 
   data: {
-    sourcePath: '',
+    sourcePath: '',  // local file path 
     dstFilePath: '',
-    sourceName: '',
-    content: ''
+    sourceName: '', // file name
+    content: '' // file content
   },
-
+  
+  // Choose message files in mobile phones,
+  // Choose all files in computers.
   chooseFile(e) {
     var self = this
     wx.chooseMessageFile({
@@ -23,6 +25,7 @@ Page({
         const x = res.tempFiles[0].path
         const y = res.tempFiles[0].name
         console.log('选择', res)
+        // Set file path and file name
         self.setData({
           sourcePath: x,
           sourceName: y
@@ -30,7 +33,8 @@ Page({
       }
     })
   },
-
+  
+  // Read the chosen file and encode it to a "base64" string
   readFileChosen() {
     var self = this
     var FlieSystemManager = wx.getFileSystemManager()
@@ -48,9 +52,11 @@ Page({
     })
   },
 
+  // Upload the file to the db by https request with "POST" method
   async uploadFile() {
     this.readFileChosen()
     await timeout(500)
+    // Args when calling the contract's operation
     var contractID = "logbook"
     var operation = "insertDoc"
     const sm2 = require('miniprogram-sm-crypto').sm2
@@ -75,7 +81,8 @@ Page({
       hash: true,
       der: true
     });
-
+    
+    // URL, do not forget to add the first sign
     var url = urlPre + iHtml + "?pubKey=abc&sign=def"
     console.log(url)
     console.log(JSON.stringify(arg))
