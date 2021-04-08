@@ -1,18 +1,21 @@
-//初始登录注册界面
-async function timeout(ms) {    //sleep函数
+// The initial user page
+async function timeout(ms) {    // the "sleep" function
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
   });
 }
 
 Page({
-  data:{    //用户信息
+  data:{    // user info
     realName:"",
     student_id:"",
     result:""
   },
 
-  //从后端获取用户信息
+  // Send request to the db for user information
+  // arg is a JSON formatted string ({"user_id": xxx, "user_name": xxxx})
+  // if inserting user to the db, or a string indicating user_id if querying
+  // the user's existence.
   request_for_user(op) {
     var self = this
     var contractID = "logbook"
@@ -21,11 +24,11 @@ Page({
     var urlPre = "https://023.node.internetapi.cn:21030"
     var id = this.data.student_id
     var arg = undefined
-    if(op == "insertUser"){   //注册用户
+    if(op == "insertUser"){   // Sign up
       arg = {user_id: id, user_name: this.data.realName}
       arg = JSON.stringify(arg)
     }
-    else {      //用户登录
+    else {      // Sign in
       arg = id
     }
     const key = sm2.generateKeyPairHex()
@@ -41,7 +44,7 @@ Page({
       der: true
     });
 
-    var url = urlPre + iHtml + signature;
+    var url = urlPre + iHtml + signature; // the https request's url
     wx.request({
       url: url,
       method: 'GET',
@@ -56,21 +59,21 @@ Page({
     })
   },
   
-  //输入框事件函数
+  // The input event function
   nameInput: function(e){
     this.setData({
       realName: e.detail.value
     })
   },
 
-  //输入框事件函数
+  // The input event function
   idInput: function(e){
     this.setData({
       student_id: e.detail.value
     })
   },
 
-  //登录按钮
+  // The sign-in button
    async signIn(){
     var that = this;
     if(this.data.realName.length == 0||this.data.student_id.length == 0){
@@ -84,14 +87,16 @@ Page({
       await timeout(300)
       var ans =  JSON.parse(that.data.result)
       ans = ans.query_result
-      if(ans){    //响应为数据库中有该用户信息
+      if(ans){    
+        // The response shows the user's existence in the db,
+        // which means a legal sign-in
         wx.showToast({
           title: '登录成功',
           icon:"none",
           duration:1000,
           success:function(){
             setTimeout(function(){
-              wx.getUserInfo({    //修改全局变量
+              wx.getUserInfo({    // Modify global user info variables
                 success: function(res) {
                   var app = getApp();
                   var userInfo = res.userInfo
@@ -104,13 +109,13 @@ Page({
                 }
               })
               wx.switchTab({
-                url: '../index/index',    //跳转页面
+                url: '../index/index',    // Jump to page index
               })
             },1000);
           }
         })
       }
-      else{   //没有该用户信息
+      else{   // No such user in db
         that.setData({
           student_id:"",
           realName:""
@@ -124,7 +129,7 @@ Page({
     }
   },
 
-  //注册按钮
+  //The sign-up button
   async signUp(){
     var that = this;
     if(this.data.realName.length == 0||this.data.student_id.length == 0){
@@ -146,13 +151,13 @@ Page({
       await timeout(300)
       var ans =  JSON.parse(that.data.result)
       ans = ans.query_result
-      if(ans){    //用户在数据库中已存在
+      if(ans){    // The user has signed up already
         wx.showToast({
           title: '用户已存在',
           icon:"none",
           duration:2000
         })
-      } else {    //用户不存在，注册成功
+      } else {    // The user does not exist, signing up successfully.
         that.request_for_user("insertUser")
         wx.showToast({
           title: '注册成功',
