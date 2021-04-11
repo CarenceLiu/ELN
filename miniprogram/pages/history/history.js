@@ -1,5 +1,3 @@
-//历史文件界面
-//sleep函数，用于等待
 async function timeout(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
@@ -15,7 +13,7 @@ Page({
   get_user_id() {
     return getApp().globalData.student_id
   },
-  //获取上传文件列表
+
   request_for_doc() {
     var self = this
     var user_id = this.get_user_id()
@@ -59,7 +57,6 @@ Page({
       }
     })
   },
-  //下载文件
   download(e) {
     console.log(e)
     var doc_id = e.currentTarget.dataset.text
@@ -90,8 +87,15 @@ Page({
       success: function (res) {
         console.log(res)
         var tmp = JSON.parse(res.data.result)
-        var tmp_docid = tmp.content.doc_id
-        var tmp_content = tmp.content.content
+        var tmp_content = ""
+        var tmp_dict = {}
+        for(var i = 0; i<tmp.content.length;i++){
+          tmp_dict[tmp.content[i].content[0]] = tmp.content[i].content[1]
+        }
+        for(var i = 0; i<tmp.content.length;i++){
+          tmp_content+=tmp_dict[i]
+        }
+        var tmp_docid = tmp.content[0].doc_id
         var FlieSystemManager = wx.getFileSystemManager()
         FlieSystemManager.writeFile({
           filePath: wx.env.USER_DATA_PATH + '/' + tmp_docid,
