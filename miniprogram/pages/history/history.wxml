@@ -1,5 +1,3 @@
-<!--pages/history/history.wxml-->
-<!--历史文件界面-->
 <view class="container">
   <button bindtap="showFile" class="button_1">查看pdf文件 </button>
   <view class="list">

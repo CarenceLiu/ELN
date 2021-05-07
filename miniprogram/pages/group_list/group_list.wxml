@@ -1,0 +1,18 @@
+<view class="container">
+  <view class = "subContainer">
+    <text>已加入群组</text>
+    <view class="list">
+      <block wx:for="{{joinList}}" wx:key="index">
+        <view class="text-content" bindtap="switchToGroup" data-text="{{item}}" data-value = "{{index}}">{{item}}</view>
+      </block>
+    </view>
+  </view>
+  <view class = "subContainer">
+    <text>已创建群组</text>
+    <view class="list">
+      <block wx:for="{{createList}}" wx:key="index">
+        <view class="text-content" bindtap="switchToGroup" data-text="{{item}}">{{item}}</view>
+      </block>
+    </view>
+  </view>
+</view>

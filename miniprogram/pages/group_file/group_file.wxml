@@ -1,0 +1,11 @@
+<view class="container">
+  <view class="title">
+    <text>群组文件</text>
+    <button bindtap="addFile">+</button>
+  </view>
+  <view class="list">
+    <block wx:for="{{fileList}}" wx:key="index">
+      <view class="file-content" data-text="{{item}}">{{item}}</view>
+    </block>
+  </view>
+</view>

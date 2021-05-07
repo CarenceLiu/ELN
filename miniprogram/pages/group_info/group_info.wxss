@@ -1,0 +1,201 @@
+.container{
+  
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  overflow: scroll;
+}
+
+.memberBox{
+  height: 50%;
+  margin: 0 auto;
+  border-bottom: 20rpx solid #F5F5F5;
+}
+
+text{
+  display: flex;
+  align-items: center;
+  border-bottom: 1rpx solid #ffffff;
+  background-color: #F5F5F5;
+  padding-left: 2%;
+  height: 90rpx;
+  font-size: 35rpx;
+}
+
+.member-content{
+  display: flex;
+  align-items: center;
+  border-bottom: 4rpx solid #F5F5F5;
+  padding-left: 3%;
+  height: 80rpx;
+  font-size: 30rpx;
+}
+
+.owner-content{
+  display: flex;
+  align-items: center;
+  border-bottom: 2rpx solid #F5F5F5;
+  padding-left: 3%;
+  color:#ff0000;
+  height: 80rpx;
+  font-size: 30rpx;
+}
+
+.administrator-content{
+  display: flex;
+  align-items: center;
+  color:#4322fc;
+  border-bottom: 4rpx solid #F5F5F5;
+  padding-left: 3%;
+  height: 80rpx;
+  font-size: 30rpx;
+}
+
+.subInfoBox{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 90rpx;
+  vertical-align: middle;
+  position:relative;
+  border-bottom: 4rpx solid #F5F5F5;
+  background: #ffffff;
+  margin: 0 auto;
+}
+
+.tag{
+  background: #ffffff;
+  margin-left: 0rpx;
+  padding-left: 2%;
+}
+
+.content{
+  background: #ffffff;
+  padding-right: 3%;
+}
+
+.infoBox{
+  border-bottom: 20rpx solid #F5F5F5;
+}
+
+button{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #ffffff;
+  margin-left: 0rpx;
+  width: 100%;
+  padding-left: 2%;
+
+}
+
+.buttonBox{
+  border-bottom: 20rpx solid #F5F5F5;
+  background: #f5f5f5;
+}
+
+.adminLine{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 90rpx;
+  vertical-align: middle;
+  position:relative;
+  background: #ffffff;
+  margin: 0 auto;
+}
+
+.memberLine{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 90rpx;
+  vertical-align: middle;
+  position:relative;
+  background: #ffffff;
+  margin: 0 auto;
+}
+
+.title{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 90rpx;
+  vertical-align: middle;
+  position:relative;
+  background: #f5f5f5;
+  margin: 0 auto;
+}
+
+.affirm{
+  position: absolute;
+  right: 3%;
+  background: #ffffff;
+  width: 15%;
+  height: 70rpx;
+  justify-content: center;
+  align-items: center;
+}
+
+image{
+  height: 55rpx;
+  width: 55rpx;
+}
+
+.addButtonBox{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 80rpx;
+  vertical-align: middle;
+  position:relative;
+  background: #f5f5f5;
+  margin: 0 auto;
+}
+
+.addButton{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 70rpx;
+  width: 50%;
+  border-radius: 25rpx;
+}
+
+input{
+  height: 70rpx;
+  border-radius: 20rpx;
+  border:3rpx solid #999999;
+  font-size: 35rpx;
+  background: #ffffff;
+  width: 75%;
+  text-align: center;
+}
+
+.inputBox{
+  margin-top: 5rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70rpx;
+}
+
+.addWarning{
+  color:red;
+  height: 35rpx;
+  font-size: 30rpx;
+  justify-content: center;
+  align-items: center;
+}
+
+.list{
+  height: 450rpx;
+  overflow: scroll;
+}

@@ -1,5 +1,4 @@
-<!--pages/upload/upload.wxml-->
-<!--上传文件页面-->
+
 <button bindtap="chooseFile" class="button_1">选择pdf文件 </button>
 <view class="text-content">
   <text>{{sourceName}}</text>

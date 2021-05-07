@@ -1,0 +1,54 @@
+<view class="container">
+  <view class = "memberBox">
+    <view class="title">
+      <text>群成员</text>
+      <button class = "affirm" wx:if="{{deletePattern}}" bindtap="affirmDelete">移除</button>
+      <button class = "affirm" wx:if="{{managePattern}}" bindtap="affirmManage">确认</button>
+    </view>
+    <view class="list">
+      <view class = "owner-content">{{owner}}</view>
+      <block wx:for="{{adminList}}" wx:key="index">
+        <view class="adminLine" bindtap="selectAdmin" data-text="{{item}}" data-index="{{index}}">
+          <view class="administrator-content">{{item}}</view>
+          <image wx:if="{{!adminSelect[index]&&deletePattern&&isOwner}}" class="content" mode="scaleToFill" src="../../image/unselected.png"></image>
+          <image wx:elif="{{adminSelect[index]&&deletePattern&&isOwner}}" class="content" mode="scaleToFill" src="../../image/selected.png"></image>
+          <image wx:if="{{managePattern&&isOwner}}" class="content" mode="scaleToFill" src="../../image/degrate.png"></image>
+        </view>
+      </block>
+      <block wx:for="{{memberList}}" wx:key="index">
+        <view class="memberLine" bindtap="selectMember" data-text="{{item}}" data-index="{{index}}">
+          <view class="member-content">{{item}}</view>
+          <image wx:if="{{!memberSelect[index]&&deletePattern&&(isOwner||isAdmin)}}" class="content" mode="scaleToFill" src="../../image/unselected.png"></image>
+          <image wx:elif="{{memberSelect[index]&&deletePattern&&(isOwner||isAdmin)}}" class="content" mode="scaleToFill" src="../../image/selected.png"></image>
+          <image wx:if="{{managePattern&&isOwner}}" class="content" mode="scaleToFill" src="../../image/update.png"></image>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view class = "infoBox">
+    <view class = "subInfoBox">
+      <text class = "tag">群组名称</text>
+      <text class = "content">{{groupName}}</text>
+    </view>
+    <view class = "subInfoBox">
+      <text class="tag">我的名字</text>
+      <text class="content">{{userName}}</text>
+    </view>
+  </view>
+  <view class="buttonBox">
+    <button bindtap="switchToGroupFile">查看群组文件</button>
+    <button bindtap="addMember" wx:if="{{isAdmin||isOwner}}">添加群组成员</button>
+    <view class = "addBox" wx:if="{{addPattern&&(isOwner||isAdmin)}}">
+      <view class="inputBox">
+        <input bindinput="addInput" placeholder="请输入学号"/>
+      </view>
+      <text class = "addWarning" wx:if="{{hasAdded}}">该成员已经在群组中</text>
+      <view class = "addButtonBox">
+        <button class="addButton" bindtap="finishAdd">完成</button>
+        <button class="addButton" bindtap="affirmAdd">添加</button>
+      </view>
+    </view>
+    <button bindtap="deleteMember" wx:if="{{isAdmin||isOwner}}">删除群组成员</button>
+    <button bindtap="manageMember" wx:if="{{isOwner}}">管理成员身份</button>
+  </view>
+</view>

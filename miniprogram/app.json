@@ -1,7 +1,10 @@
 {
-  "entryPagePath": "pages/login/login",
+  "entryPagePath":"pages/login/login",
   "pages": [
-    "pages/login/login",  
+    "pages/login/login",
+    "pages/group_info/group_info",
+    "pages/group_list/group_list",
+    "pages/group_file/group_file",
     "pages/index/index",
     "pages/upload/upload",
     "pages/history/history",

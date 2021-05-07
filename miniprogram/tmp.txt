@@ -1,0 +1,60 @@
+siton-2009
+ssh user@162.105.19.156
+ssh user@162.105.19.86
+ssh zzl@162.105.19.86 (12345)
+ssh root@8.140.165.158
+siton-2009
+
+docker run -it -v /home/user/zzl:/root --rm --network=host --ipc=host --gpus all tf_torch:latest bash(pure tf container)
+add this: -v /home/user/zzl:/root \ (run.sh)
+
+
+#recommendation
+
+
+CUDA_VISIBLE_DEVICES=0 python train.py  --epochs 5000
+
+
+
+CUDA_MPS_ACTIVE_THREAD_PERCENTAGE=75
+
+CUDA_VISIBLE_DEVICES=0 python tf_cnn_benchmarks.py --num_gpus=1 --batch_size=32 --model=resnet152 --variable_update=parameter_server
+
+
+
+CUDA_VISIBLE_DEVICES=0 python benchmarks/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py --num_gpus=1 --batch_size=156 --model=inception3 --variable_update=parameter_server --data_dir=imagenet-data/train --num_batches=200 --display_every=20 --data_name=imagenet
+
+CUDA_VISIBLE_DEVICES=0 python benchmarks/scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py --num_gpus=1 --batch_size=1 --model=resnet152 --variable_update=parameter_server --data_dir=imagenet-data/train --num_batches=200 --display_every=20 --data_name=imagenet
+
+												
+CUDA_VISIBLE_DEVICES=0 python test-transformer/examples/language-modeling/run_language_modeling.py --output_dir=output --model_type=bert-base-uncased --model_name_or_path=bert-base-uncased --do_train --train_data_file=test-transformer/test-data/bert.txt --mlm --max_steps 1000 --per_device_train_batch_size 10 --overwrite_output_dir
+
+
+CUDA_VISIBLE_DEVICES=0 python examples/imagenet/main.py -a resnet152 --lr 0.01 --batch-size 48 --epochs 1 --evaluate --gpu 0 data
+
+# 2021 0317
+CUDA_VISIBLE_DEVICES=0 python distributed-training/test_scripts/imagenet/imagenet.py --batch-size 96 --epochs 1 --model inception_v3 --train-dir data/train --val-dir  data/train
+CUDA_VISIBLE_DEVICES=0 python distributed-training/test_scripts/imagenet/imagenet_resnet.py --batch-size 160 --epochs 1 --model resnet152 --train-dir data/train --val-dir  data/train
+
+
+# pip install transforms  pip install datasets
+# nlp
+CUDA_VISIBLE_DEVICES=0 python transformers/examples/legacy/question-answering/run_squad.py --model_type bert --model_name_or_path bert-base-uncased --do_train  --do_lower_case --train_file squad-data/train-v2.0.json --predict_file squad-data/dev-v2.0.json --per_gpu_train_batch_size 32 --learning_rate 3e-5 --num_train_epochs 1.0 --max_seq_length 384 --doc_stride 128 --output_dir nlp_output --overwrite_output_dir
+CUDA_VISIBLE_DEVICES=0 python transformers/examples/legacy/question-answering/run_squad.py  --model_type bert  --model_name_or_path gpt2 --do_train  --do_lower_case --train_file squad-data/train-v2.0.json --predict_file squad-data/dev-v2.0.json --per_gpu_train_batch_size 12 --learning_rate 3e-5 --num_train_epochs 1.0 --max_seq_length 384 --doc_stride 128 --output_dir nlp_output --overwrite_output_dir
+
+# change the model path
+CUDA_VISIBLE_DEVICES=0 python transformers/examples/legacy/question-answering/run_squad.py --model_type bert --model_name_or_path bert-config --do_train  --do_lower_case --train_file squad-data/train-v2.0.json --predict_file squad-data/dev-v2.0.json --per_gpu_train_batch_size 32 --learning_rate 3e-5 --num_train_epochs 1.0 --max_seq_length 384 --doc_stride 128 --output_dir nlp_output --overwrite_output_dir --save_steps 50000
+
+
+CUDA_VISIBLE_DEVICES=1 python transformers/examples/language-modeling/run_clm.py \
+    --output_dir=output \
+    --model_type=gpt2 \
+    --model_name_or_path=gpt2-config \
+    --do_train \
+    --train_file wiki-data/wikitext-2-raw/wiki.train.raw.txt \
+    --num_train_epochs 1.0 --per_gpu_train_batch_size 8 --overwrite_output_dir --learning_rate 3e-5  --save_steps 50000
+
+
+/usr/local/cuda-11.1/bin/nsys profile -o prefetch --stats=true  CUDA_VISIBLE_DEVICES=1 python distributed-training/test_scripts/imagenet/imagenet_resnet.py --batch-size 16 --epochs 1 --model resnet152 --train-dir data/train --val-dir  data/train
+
+

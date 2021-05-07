@@ -1,4 +1,3 @@
-<!--pages/index/index.wxml-->
-<!--主页（上传文件&&历史文件）-->
 <navigator url="../upload/upload"><button>上传文件</button></navigator>
 <navigator url="../history/history"><button>查看历史上传文件</button></navigator>
+<navigator url="../group_list/group_list"><button>查看群组</button></navigator>

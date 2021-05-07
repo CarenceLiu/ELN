@@ -55,7 +55,7 @@ Page({
     var contentsDict = {}
     var cnt = 0
     var contentLen = this.data.content.length
-    var seg_size = 100
+    var seg_size = 10000
     for (var start_pos = 0; start_pos + seg_size < contentLen; start_pos += seg_size) {
       contentsDict[cnt] = [cnt,'']
       contentsDict[cnt][1] = this.data.content.slice(start_pos, start_pos + seg_size)

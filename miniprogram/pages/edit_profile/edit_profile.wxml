@@ -1,20 +1,19 @@
-<!--pages/edit_profile/edit_profile.wxml-->
-<!--个人信息修改界面（未完成）-->
 <view class = "container">
-  <view class="realName">
+  <view class="secondContainer">
+    <text>昵称</text>
+    <input class="Real" value='{{nickName}}' bindinput="nickNameInput"/>
+  </view>
+  <view class="secondContainer">
     <text>姓名</text>
-    <view class="real">{{realName}}</view>
+    <input class="Real" value='{{realName}}' bindinput="realNameInput"/>
   </view>
-  <view class="student_id">
-    <text>学号</text>
-    <view class="real">{{student_id}}</view>
-  </view>
-  <view class="school">
+  <view class="secondContainer">
     <text>学校</text>
-    <view class="real">{{school}}</view>
+    <input class="Real" value='{{school}}' bindinput="schoolInput"/>
   </view>
-  <view class="college">
+  <view class="secondContainer">
     <text>学院</text>
-    <view class="real">{{college}}</view>
+    <input class="Real" value='{{college}}' bindinput="collegeInput"/>
   </view>
+    <button bindtap="affirm">确认</button>
 </view>

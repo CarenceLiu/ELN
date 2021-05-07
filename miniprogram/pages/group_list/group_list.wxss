@@ -1,0 +1,33 @@
+.container{
+  
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  overflow-y: scroll;
+}
+
+.subContainer{
+  width: 95%;
+  height: 50%;
+  margin: 0 auto;
+  overflow: scroll;
+}
+
+text{
+  display: flex;
+  align-items: center;
+  border-bottom: 1rpx solid #ffffff;
+  background-color: #F5F5F5;
+  padding-left: 2%;
+  height: 90rpx;
+  font-size: 35rpx;
+}
+
+.text-content{
+  display: flex;
+  align-items: center;
+  border-bottom: 4rpx solid #F5F5F5;
+  padding-left: 5%;
+  height: 130rpx;
+  font-size: 40rpx;
+}
