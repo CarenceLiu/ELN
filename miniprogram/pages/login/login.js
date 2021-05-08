@@ -1,8 +1,20 @@
-async function timeout(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
+//封装request
+const request = (params) => {
+  //返回
+  return new Promise((resolve, reject) => {
+      wx.request({
+          //解构params获取请求参数
+          ...params,
+          success: (result) => {
+              resolve(result);
+          },
+          fail: (err) => {
+              reject(err);
+          }
+      });
   });
 }
+
 
 Page({
   data:{
@@ -11,8 +23,8 @@ Page({
     result:""
   },
 
+
   request_for_user(op) {
-    var self = this
     var contractID = "logbook"
     var operation = op
     const sm2 = require('miniprogram-sm-crypto').sm2
@@ -40,18 +52,8 @@ Page({
     });
 
     var url = urlPre + iHtml + signature;
-    wx.request({
-      url: url,
-      method: 'GET',
-      success: function (res) {
-        self.setData({
-          result:res.data.result
-        })
-      },
-      fail: function (err) {
-        console.log(err)
-      }
-    })
+    return url;
+
   },
   
 
@@ -67,7 +69,8 @@ Page({
     })
   },
 
-   async signIn(){
+  //登录按钮事件
+  async signIn(e){
     var that = this;
     if(this.data.realName.length == 0||this.data.student_id.length == 0){
       wx.showToast({
@@ -76,9 +79,12 @@ Page({
         duration:2000
       })
     } else{
-      that.request_for_user("query_user")
-      await timeout(600)
-      console.log(that.data.result)
+      var url = that.request_for_user("query_user");
+      var info = await request({
+        url: url,
+        method: 'GET'
+      });
+      that.data.result = info.data.result;
       var ans =  JSON.parse(that.data.result)
       ans = ans.query_result
       if(ans){
@@ -87,22 +93,9 @@ Page({
           icon:"none",
           duration:1000,
           success:function(){
-            setTimeout(function(){
-              wx.getUserInfo({
-                success: function(res) {
-                  var app = getApp();
-                  var userInfo = res.userInfo
-                  var nickName = userInfo.nickName
-                  var avatarUrl = userInfo.avatarUrl
-                  app.globalData.nickName = nickName
-                  app.globalData.avatarUrl = avatarUrl
-                  app.globalData.realName = that.data.realName
-                  app.globalData.student_id = that.data.student_id
-                }
-              })
-              wx.switchTab({
-                url: '../index/index',
-              })
+            console.log("in toast success")
+            wx.switchTab({
+              url: '../index/index',
             },1000);
           }
         })
@@ -121,7 +114,8 @@ Page({
     }
   },
 
-  async signUp(){
+  //注册按钮事件
+  async signUp(e){
     var that = this;
     if(this.data.realName.length == 0||this.data.student_id.length == 0){
       wx.showToast({
@@ -138,8 +132,12 @@ Page({
     //   })
     // } 
     else {
-      that.request_for_user("query_user")
-      await timeout(300)
+      var url = that.request_for_user("query_user");
+      var info = await request({
+        url: url,
+        method: 'GET'
+      });
+      that.data.result = info.data.result;
       var ans =  JSON.parse(that.data.result)
       ans = ans.query_result
       if(ans){
@@ -149,7 +147,30 @@ Page({
           duration:2000
         })
       } else {
-        that.request_for_user("insertUser")
+        url = that.request_for_user("insertUser")
+        await request({
+          url: url,
+          method: 'GET'
+        });
+        wx.getUserProfile({
+          desc:'授权获取信息',
+          success: function(res) {
+            //此处逻辑需要完善 下一步要上传存储用户信息
+            console.log("getUserProfile")
+            console.log(res)
+            // var app = getApp();
+            // var userInfo = res.data;
+            // var nickName = userInfo.nickName
+            // var avatarUrl = userInfo.avatarUrl
+            // app.globalData.nickName = nickName
+            // app.globalData.avatarUrl = avatarUrl
+            // app.globalData.realName = that.data.realName
+            // app.globalData.student_id = that.data.student_id
+          },
+          fail:function(err){
+            console.log(err)
+          }
+        })
         wx.showToast({
           title: '注册成功',
           icon:"none",

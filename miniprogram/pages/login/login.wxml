@@ -11,7 +11,7 @@
     <input class="log_input" placeholder="请输入学号" type="number" maxlength="10" bindinput="idInput" value="{{student_id}}"/>
   </view>
   <view class="button_signin">
-    <button open-type="getUserInfo" bindtap="signIn">登录</button>
+    <button bindtap="signIn">登录</button>
   </view>
   <view class="button_signup">
     <button bindtap="signUp">注册</button>
