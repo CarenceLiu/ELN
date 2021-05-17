@@ -49,6 +49,8 @@
       </view>
     </view>
     <button bindtap="deleteMember" wx:if="{{isAdmin||isOwner}}">删除群组成员</button>
+    <!--暂时不管理群成员身份
     <button bindtap="manageMember" wx:if="{{isOwner}}">管理成员身份</button>
+    -->
   </view>
 </view>

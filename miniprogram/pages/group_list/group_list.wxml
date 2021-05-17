@@ -8,10 +8,20 @@
     </view>
   </view>
   <view class = "subContainer">
-    <text>已创建群组</text>
+    <view class = "title">
+      <text>已创建群组</text>
+      <button bindtap="inputName" class="plus">+</button>
+    </view>
+    <view class = "createBox" wx:if="{{isCreate}}">
+      <view class="inputBox">
+        <input bindinput="inputCreateName" placeholder="请输入群名称"/>
+      </view>
+      <text class = "createWarning" wx:if="{{hasCreated}}">该群已存在</text>
+      <button class="createButton" bindtap="createGroup">确认</button>
+    </view>
     <view class="list">
       <block wx:for="{{createList}}" wx:key="index">
-        <view class="text-content" bindtap="switchToGroup" data-text="{{item}}">{{item}}</view>
+        <view class="text-content" bindtap="switchToGroup" data-text="{{item}}" data-value="{{index}}">{{item}}</view>
       </block>
     </view>
   </view>

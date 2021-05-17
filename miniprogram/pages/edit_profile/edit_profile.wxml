@@ -4,14 +4,6 @@
     <input class="Real" value='{{nickName}}' bindinput="nickNameInput"/>
   </view>
   <view class="secondContainer">
-    <text>姓名</text>
-    <input class="Real" value='{{realName}}' bindinput="realNameInput"/>
-  </view>
-  <view class="secondContainer">
-    <text>学校</text>
-    <input class="Real" value='{{school}}' bindinput="schoolInput"/>
-  </view>
-  <view class="secondContainer">
     <text>学院</text>
     <input class="Real" value='{{college}}' bindinput="collegeInput"/>
   </view>

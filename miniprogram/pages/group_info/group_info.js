@@ -1,14 +1,31 @@
+//封装request
+const request = (params) => {
+  //返回
+  return new Promise((resolve, reject) => {
+      wx.request({
+          //解构params获取请求参数
+          ...params,
+          success: (result) => {
+              resolve(result);
+          },
+          fail: (err) => {
+              reject(err);
+          }
+      });
+  });
+}
+
+
 Page({
 
   data: {
-    groupName:"test",
-    group_id:-1,
-    userName:"Student_1",
-    owner:"Owner",
+    groupName:"",
+    group_id:"",
+    userName:"",
+    owner:"",
     owner_id:-1,
-    adminList:{1111:"Teacher_1"},
-    memberList:{123:"Student_1",1:"Student_2"},
-    fileList:["file_1","file_2","file_3"],
+    adminList:{},
+    memberList:{},
     //权限
     addPattern: false,
     deletePattern: false,
@@ -23,6 +40,30 @@ Page({
     hasAdded:false
   },
 
+  //拼装请求url
+  request_url(op,arg) {
+    var contractID = "logbook"
+    var operation = op
+    const sm2 = require('miniprogram-sm-crypto').sm2
+    var urlPre = "https://023.node.internetapi.cn:21030"
+    var id = this.data.student_id
+    const key = sm2.generateKeyPairHex()
+    var publicKey = key.publicKey
+    var privateKey = key.privateKey
+    const iHtml = "/SCIDE/SCManager?action=executeContract&contractID=" + contractID +
+      "&operation=" + operation +
+      "&arg=" + arg +
+      "&pubkey=" + publicKey + "&signature=";
+    const toSign = contractID + "|" + operation + "|" + arg + "|" + publicKey;
+    const signature = sm2.doSignature(toSign, privateKey, {
+      hash: true,
+      der: true
+    });
+
+    var url = urlPre + iHtml + signature;
+    return url;
+  },
+
   //查看群组文件事件
   switchToGroupFile(e){
     console.log(e)
@@ -33,7 +74,7 @@ Page({
       url: '../group_file/group_file',
       //传送信息到groupInfo
       success:function(res){
-        res.eventChannel.emit('toGroupFile',{data:[that.groupName,that.group_id,that.fileList]})
+        res.eventChannel.emit('toGroupFile',{data:[that.groupName,that.group_id]})
       }
     })
   },
@@ -75,11 +116,43 @@ Page({
     }
     else{
       //需要判断是否在数据库中
-      var addr_1 = "memberList."+ _data.idInput;
-      var addr_2 = "memberSelect."+_data.idInput;
-      this.setData({
-        [addr_1]:"Student_"+_data.idInput,
-        [addr_2]:false
+      var that = this;
+      var arg = {group_id:_data.group_id,mem_list:[addID]};
+      arg = JSON.stringify(arg);
+      console.log(arg)
+      var url = that.request_url("insertGroupMem",arg)
+      wx.request({
+        url: url,
+        method: 'GET',
+        success:function(res){
+          console.log(res);
+          res = JSON.parse(res.data.result);
+          if(res.result == "success")
+          {
+            console.log("yes")
+            arg = _data.idInput;
+            console.log(arg)
+            arg = JSON.stringify(arg);
+            url = that.request_url("query_user_personal_info",arg)
+            wx.request({
+              url: url,
+              method:"GET",
+              success:function(res){
+                console.log(res)
+                res = res.data.result;
+                res = JSON.parse(res);
+                if(res.query_result){
+                  var addr_1 = "memberList."+ _data.idInput;
+                  var addr_2 = "memberSelect."+_data.idInput;
+                  that.setData({
+                    [addr_1]:res.user_name,  //需要修改为用户真实姓名
+                    [addr_2]:false
+                  })
+                }
+              }
+            })
+        }
+        }
       })
     }
   },
@@ -89,7 +162,8 @@ Page({
     this.setData({
       addPattern:false,
       managePattern:false,
-      deletePattern:true
+      deletePattern:true,
+      hasAdded:false
     })
   },
 
@@ -98,7 +172,8 @@ Page({
     this.setData({
       addPattern:false,
       managePattern:true,
-      deletePattern:false
+      deletePattern:false,
+      hasAdded:false
     })
   },
 
@@ -124,12 +199,16 @@ Page({
 
   //移除按钮事件
   affirmDelete(e){
+    var that = this;
     var tmp_admin = this.data.adminList;
     var tmp_member = this.data.memberList;
     var tmp_admin_select = {};
     var tmp_member_select = {};
+    var admin_delete = [];
+    var member_delete = [];
     for(var key in this.data.adminSelect){
       if(this.data.adminSelect[key]){
+        admin_delete.push(key);
         delete tmp_admin[key];
       }
       else{
@@ -138,19 +217,35 @@ Page({
     }
     for(var key in this.data.memberSelect){
       if(this.data.memberSelect[key]){
+        member_delete.push(key);
         delete tmp_member[key];
       }
       else{
         tmp_member_select[key] = false;
       }
     }
-    console.log(tmp_admin)
-    console.log(tmp_member)
-    this.setData({
-      adminList: tmp_admin,
-      memberList: tmp_member,
-      adminSelect: tmp_admin_select,
-      memberSelect: tmp_member_select,
+    var arg = {group_id:that.data.group_id,mem_list:member_delete};
+    arg = JSON.stringify(arg);
+    var url = that.request_url("deleteGroupMem",arg);
+    wx.request({
+      url: url,
+      method:"GET",
+      success:function(res){
+        console.log(res);
+        res = JSON.parse(res.data.result);
+        if(res.result == "success")
+        {
+          that.setData({
+            adminList: tmp_admin,
+            memberList: tmp_member,
+            adminSelect: tmp_admin_select,
+            memberSelect: tmp_member_select,
+            deletePattern: false
+          })
+        }
+      }
+    })
+    that.setData({
       deletePattern: false
     })
   },
@@ -203,25 +298,52 @@ Page({
     console.log("onLoad")
     //用于接受groupList参数
     var that = this;
-    /*
+    var tmp_group_name ="";
+    var tmp_group_id = "";
     const eventChannel = this.getOpenerEventChannel();
     eventChannel.on('toGroupInfo',(res) =>{
       console.log(res.data);
-      that.setData({
-        groupName:res.data[0],
-        group_id:res.data[1]
-      })
+      tmp_group_name = res.data[0];
+      tmp_group_id = res.data[1];
     })
-    */
-   //对选择列表初始化
-    for(var key in that.data.adminList)
-    {
-      that.data.adminSelect[key] = false;
-    }
-    for(var key in that.data.memberList)
-    {
-      that.data.memberSelect[key] = false;
-    }
+
+    var arg = tmp_group_id;
+    console.log(arg);
+    arg = JSON.stringify(arg);
+    var url = that.request_url("query_group_info",arg);
+    wx.request({
+      url: url,
+      method:"GET",
+      success:function(res){
+        console.log(res);
+        res = JSON.parse(res.data.result);
+        var tmp_member = {};
+        for(var i = 1; i < res.user_list.length ; i++)
+        {
+          var tmp = res.user_list[i];
+          tmp_member[tmp.user_id] = tmp.user_name;
+        }
+        that.setData({
+          owner_id:res.owner_id,
+          owner:res.owner_name,
+          memberList:tmp_member,
+          groupName:tmp_group_name,
+          group_id:tmp_group_id,
+          userName:getApp().globalData.realName
+        })
+        //对选择列表初始化
+        /*for(var key in that.data.adminList)
+        {
+          that.data.adminSelect[key] = false;
+        }*/
+        for(var key in tmp_member)
+        {
+          that.data.memberSelect[key] = false;
+        }
+      }
+    })
+
+
   },
 
   onShow(){

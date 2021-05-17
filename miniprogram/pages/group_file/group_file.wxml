@@ -5,7 +5,7 @@
   </view>
   <view class="list">
     <block wx:for="{{fileList}}" wx:key="index">
-      <view class="file-content" data-text="{{item}}">{{item}}</view>
+      <view class="file-content" bindtap = "download" data-text="{{item}}">{{item}}</view>
     </block>
   </view>
 </view>

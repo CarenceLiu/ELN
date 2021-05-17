@@ -9,7 +9,9 @@
    <text>昵称： {{nickName}}</text>
    <text>姓名： {{realName}}</text>
    <text>学号： {{student_id}}</text>
+  <!--暂时不显示学校
    <text>学校： {{school}}</text>
+  -->
    <text>学院： {{college}}</text>
  </view>
 

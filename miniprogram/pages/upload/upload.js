@@ -5,6 +5,24 @@ async function timeout(ms) {
   });
 }
 
+//封装request
+const request = (params) => {
+  //返回
+  return new Promise((resolve, reject) => {
+      wx.request({
+          //解构params获取请求参数
+          ...params,
+          success: (result) => {
+              resolve(result);
+          },
+          fail: (err) => {
+              reject(err);
+          }
+      });
+  });
+}
+
+
 Page({
 
   data: {
@@ -12,6 +30,30 @@ Page({
     dstFilePath: '',
     sourceName: '',
     content: ''
+  },
+
+  //拼装请求url
+  request_url(op,arg) {
+    var contractID = "logbook"
+    var operation = op
+    const sm2 = require('miniprogram-sm-crypto').sm2
+    var urlPre = "https://023.node.internetapi.cn:21030"
+    var id = this.data.student_id
+    const key = sm2.generateKeyPairHex()
+    var publicKey = key.publicKey
+    var privateKey = key.privateKey
+    const iHtml = "/SCIDE/SCManager?action=executeContract&contractID=" + contractID +
+      "&operation=" + operation +
+      "&arg=" + arg +
+      "&pubkey=" + publicKey + "&signature=";
+    const toSign = contractID + "|" + operation + "|" + arg + "|" + publicKey;
+    const signature = sm2.doSignature(toSign, privateKey, {
+      hash: true,
+      der: true
+    });
+
+    var url = urlPre + iHtml + signature;
+    return url;
   },
 
   chooseFile(e) {
@@ -75,8 +117,7 @@ Page({
     var operation = "insertDoc"
     const sm2 = require('miniprogram-sm-crypto').sm2
     var urlPre = "https://023.node.internetapi.cn:21030"
-    var userID = app.globalData.student_id
-
+    var userID = app.globalData.student_id;
     for (var i = 0; i < cnt; i += 1) {
       var arg = {
         user_id: userID,
@@ -84,6 +125,7 @@ Page({
         doc_id: userID + " " + this.data.sourceName,
         content: contentsDict[i],
       }
+      console.log(arg)
       const key = sm2.generateKeyPairHex()
       var publicKey = key.publicKey
       var privateKey = key.privateKey

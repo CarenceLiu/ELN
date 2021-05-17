@@ -24,15 +24,16 @@ Page({
   },
 
 
-  request_for_user(op) {
+  request_url(op) {
     var contractID = "logbook"
-    var operation = op
+    var operation = op;
+    var app = getApp()
     const sm2 = require('miniprogram-sm-crypto').sm2
     var urlPre = "https://023.node.internetapi.cn:21030"
     var id = this.data.student_id
     var arg = undefined
     if(op == "insertUser"){
-      arg = {user_id: id, user_name: this.data.realName}
+      arg = {user_id: id, user_name: this.data.realName, head_sculpture:app.globalData.avatarUrl,nick_name:app.globalData.nickName}
       arg = JSON.stringify(arg)
     }
     else {
@@ -53,7 +54,6 @@ Page({
 
     var url = urlPre + iHtml + signature;
     return url;
-
   },
   
 
@@ -79,20 +79,26 @@ Page({
         duration:2000
       })
     } else{
-      var url = that.request_for_user("query_user");
+      var url = that.request_url("query_user_personal_info");
       var info = await request({
         url: url,
         method: 'GET'
       });
+      console.log(info);
       that.data.result = info.data.result;
       var ans =  JSON.parse(that.data.result)
-      ans = ans.query_result
-      if(ans){
+      if(ans.query_result){
         wx.showToast({
           title: '登录成功',
           icon:"none",
           duration:1000,
           success:function(){
+            var app = getApp();
+            app.globalData.student_id = ans.user_id;
+            app.globalData.realName = ans.user_name;
+            app.globalData.nickName = ans.nick_name;
+            app.globalData.college = ans.user_college;
+            app.globalData.avatarUrl = ans.head_sculpture;
             console.log("in toast success")
             wx.switchTab({
               url: '../index/index',
@@ -132,7 +138,7 @@ Page({
     //   })
     // } 
     else {
-      var url = that.request_for_user("query_user");
+      var url = that.request_url("query_user");
       var info = await request({
         url: url,
         method: 'GET'
@@ -147,34 +153,35 @@ Page({
           duration:2000
         })
       } else {
-        url = that.request_for_user("insertUser")
-        await request({
-          url: url,
-          method: 'GET'
-        });
         wx.getUserProfile({
           desc:'授权获取信息',
           success: function(res) {
-            //此处逻辑需要完善 下一步要上传存储用户信息
             console.log("getUserProfile")
             console.log(res)
-            // var app = getApp();
-            // var userInfo = res.data;
-            // var nickName = userInfo.nickName
-            // var avatarUrl = userInfo.avatarUrl
-            // app.globalData.nickName = nickName
-            // app.globalData.avatarUrl = avatarUrl
-            // app.globalData.realName = that.data.realName
-            // app.globalData.student_id = that.data.student_id
+            var app = getApp();
+            var userInfo = res.userInfo;
+            var nickName = userInfo.nickName
+            var avatarUrl = userInfo.avatarUrl
+            app.globalData.nickName = nickName
+            app.globalData.avatarUrl = avatarUrl
+            app.globalData.realName = that.data.realName
+            app.globalData.student_id = that.data.student_id
+            url = that.request_url("insertUser")
+            wx.request({
+              url: url,
+              method: 'GET',
+              success:function(){
+                wx.showToast({
+                  title: '注册成功',
+                  icon:"none",
+                  duration:2000
+                })
+              }
+            });
           },
           fail:function(err){
             console.log(err)
           }
-        })
-        wx.showToast({
-          title: '注册成功',
-          icon:"none",
-          duration:2000
         })
       }
     }
